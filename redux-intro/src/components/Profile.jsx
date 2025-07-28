@@ -26,7 +26,6 @@ const Profile = () => {
         <div className="profile-container">
             <div className="profile-big-card">
 
-                {/* FOLLOWING BAR dentro de la card */}
                 <div className="following-bar">
                     {user.following && user.following.length > 0 ? (
                         user.following.map((followedUser) => {
@@ -48,7 +47,6 @@ const Profile = () => {
                     )}
                 </div>
 
-                {/* CONTENIDO PRINCIPAL */}
                 <div className="profile-left">
                     <div className="profile-card">
 

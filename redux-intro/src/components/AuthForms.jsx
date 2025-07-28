@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { notification } from 'antd'
-import { register, login, reset } from '../auth/authSlice'
+import { register, login, reset, getProfile } from '../auth/authSlice'
 import { useNavigate } from 'react-router-dom'
 import '../assets/styles/authform.scss'
 
@@ -51,7 +51,7 @@ const AuthForms = () => {
     dispatch(register({ name, email, password, age: Number(age) }))
   }
 
-  const onSubmitLogin = (e) => {
+  const onSubmitLogin = async (e) => {
     e.preventDefault()
     const { email, password } = loginData
 
@@ -59,21 +59,26 @@ const AuthForms = () => {
       return notification.error({ message: 'Error', description: 'Please fill in all fields' })
     }
 
-    dispatch(login({ email, password }))
+    try {
+      await dispatch(login({ email, password })).unwrap()
+      await dispatch(getProfile())
+    } catch (err) {
+      // error notification ya manejado en slice
+    }
   }
 
   useEffect(() => {
     if (isSuccess && user) {
       notification.success({ message: 'Success', description: message || 'Welcome!' })
-      navigate('/profile')
+      navigate('/')
+      dispatch(reset())
     }
 
     if (isError) {
       notification.error({ message: 'Error', description: message || 'Something went wrong' })
+      dispatch(reset())
     }
-
-    dispatch(reset())
-  }, [isSuccess, isError, message, user, dispatch, navigate])
+  }, [isSuccess, isError, message, user, navigate, dispatch])
 
   return (
     <div className={`wrapper ${activeForm === 'register' ? 'active' : ''}`}>

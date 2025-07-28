@@ -3,7 +3,10 @@ import authService from './authService'
 
 const rawUser = localStorage.getItem('user')
 const userStorage = rawUser && rawUser !== 'undefined' ? JSON.parse(rawUser) : null
-const tokenStorage = localStorage.getItem('token')
+
+const rawToken = localStorage.getItem('token')
+// token es string plano, no parsear ni modificar
+const tokenStorage = rawToken && rawToken.startsWith('eyJ') ? rawToken : null
 
 const initialState = {
   user: userStorage || null,
