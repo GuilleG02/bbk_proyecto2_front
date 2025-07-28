@@ -56,6 +56,12 @@ const authSlice = createSlice({
       state.isSuccess = false
       state.message = ''
     },
+    // Nueva acción para actualizar el following del user
+    updateUserFollowing: (state, action) => {
+      if (state.user) {
+        state.user.following = action.payload
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -89,5 +95,5 @@ const authSlice = createSlice({
   },
 })
 
-export const { reset } = authSlice.actions
+export const { reset, updateUserFollowing } = authSlice.actions
 export default authSlice.reducer

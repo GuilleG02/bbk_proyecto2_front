@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 import postService from './postService'
+
+const API_URL = postService.API_URL
 
 const initialState = {
   posts: [],
@@ -8,6 +11,7 @@ const initialState = {
   likesLoading: {},
 }
 
+// Traer todos los posts
 export const fetchPosts = createAsyncThunk('posts/fetchAll', async (_, thunkAPI) => {
   try {
     return await postService.getAllPosts()
@@ -16,14 +20,39 @@ export const fetchPosts = createAsyncThunk('posts/fetchAll', async (_, thunkAPI)
   }
 })
 
+// Traer post por ID
+export const fetchPostById = createAsyncThunk('posts/fetchById', async (postId, thunkAPI) => {
+  try {
+    const res = await axios.get(`${API_URL}/posts/${postId}`)
+    return res.data
+  } catch (error) {
+    return thunkAPI.rejectWithValue('Error al cargar el post')
+  }
+})
+
+// Toggle Like
 export const toggleLikePost = createAsyncThunk('posts/toggleLike', async (postId, thunkAPI) => {
   try {
-    await postService.toggleLikePost(postId)
-    return postId
+    const updatedPost = await postService.toggleLikePost(postId)
+    return updatedPost
   } catch (err) {
     return thunkAPI.rejectWithValue('Error al cambiar like')
   }
 })
+
+// Agregar comentario
+export const addComment = createAsyncThunk(
+  'posts/addComment',
+  async ({ postId, content }, thunkAPI) => {
+    try {
+      const comment = await postService.addComment(postId, content)
+      return { postId, comment }
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Error al agregar comentario')
+    }
+  }
+)
+
 
 const postSlice = createSlice({
   name: 'posts',
@@ -33,6 +62,7 @@ const postSlice = createSlice({
       state.posts = []
       state.loading = false
       state.error = null
+      state.likesLoading = {}
     },
   },
   extraReducers: (builder) => {
@@ -49,27 +79,63 @@ const postSlice = createSlice({
         state.loading = false
         state.error = action.payload
       })
+
+      .addCase(fetchPostById.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchPostById.fulfilled, (state, action) => {
+        const post = action.payload
+        const index = state.posts.findIndex((p) => p._id === post._id)
+        if (index !== -1) {
+          state.posts[index] = post
+        } else {
+          state.posts.push(post)
+        }
+        state.loading = false
+      })
+      .addCase(fetchPostById.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+
       .addCase(toggleLikePost.pending, (state, action) => {
         state.likesLoading[action.meta.arg] = true
       })
       .addCase(toggleLikePost.fulfilled, (state, action) => {
-        const postId = action.payload
-        const post = state.posts.find((p) => p._id === postId)
-        if (post) {
-          const likedIndex = post.likes?.indexOf('liked') ?? -1
-          if (likedIndex >= 0) {
-            // Quitar like
-            post.likes.splice(likedIndex, 1)
-          } else {
-            // Agregar like
-            post.likes = [...(post.likes || []), 'liked']
-          }
+        const updatedPost = action.payload
+        const index = state.posts.findIndex((p) => p._id === updatedPost._id)
+
+        if (index !== -1) {
+          state.posts[index] = updatedPost
         }
-        state.likesLoading[postId] = false
+
+        state.likesLoading[updatedPost._id] = false
       })
       .addCase(toggleLikePost.rejected, (state, action) => {
         const postId = action.meta.arg
         state.likesLoading[postId] = false
+        state.error = action.payload
+      })
+
+      // Manejo de comentarios
+      .addCase(addComment.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        const { postId, comment } = action.payload
+        const postIndex = state.posts.findIndex((p) => p._id === postId)
+        if (postIndex !== -1) {
+          if (!state.posts[postIndex].comments) {
+            state.posts[postIndex].comments = []
+          }
+          state.posts[postIndex].comments.push(comment)
+        }
+        state.loading = false
+      })
+      .addCase(addComment.rejected, (state, action) => {
+        state.loading = false
         state.error = action.payload
       })
   },

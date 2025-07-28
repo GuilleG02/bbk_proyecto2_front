@@ -3,12 +3,13 @@ import AuthForms from './components/AuthForms'
 import Profile from './components/Profile'
 import EditProfile from './components/EditProfile'
 import Home from './components/Home'
+import PostDetail from './components/PostDetail'  // Importar PostDetail
 import TheHeader from './components/TheHeader'
 import PrivateRoute from './components/PrivateRoute'
 
 function AppContent() {
   const location = useLocation()
-  const hideHeaderPaths = ['/auth'] // aquí ocultamos el header
+  const hideHeaderPaths = ['/auth'] // Ocultar header en auth
 
   const showHeader = !hideHeaderPaths.includes(location.pathname)
 
@@ -17,7 +18,7 @@ function AppContent() {
       {showHeader && <TheHeader />}
       <main style={{ paddingTop: showHeader ? '100px' : '0' }}>
         <Routes>
-          {/* Ruta pública para login/register */}
+          {/* Ruta pública */}
           <Route path="/auth" element={<AuthForms />} />
 
           {/* Rutas protegidas */}
@@ -45,18 +46,25 @@ function AppContent() {
               </PrivateRoute>
             }
           />
+          {/* Ruta detalle post */}
+          <Route
+            path="/posts/:id"
+            element={
+              <PrivateRoute>
+                <PostDetail />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </main>
     </>
   )
 }
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <AppContent />
     </BrowserRouter>
   )
 }
-
-export default App

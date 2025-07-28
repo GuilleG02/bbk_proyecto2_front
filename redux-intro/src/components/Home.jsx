@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom' // Importar Link para navegación
 import { fetchPosts, toggleLikePost } from '../posts/postSlice'
 import postService from '../posts/postService'
 import '../assets/styles/home.scss'
 
-// URL imagen por defecto si no hay imagen en el post
-const DEFAULT_IMAGE = '/default-post-image.jpg' // pon aquí la ruta correcta a tu placeholder
+const DEFAULT_POST_IMAGE = '/default-post-image.jpg'
+const DEFAULT_AVATAR = '/avatar.png'
 
 export default function Home() {
   const dispatch = useDispatch()
   const { posts, loading, error, likesLoading } = useSelector((state) => state.posts)
+  const { user } = useSelector((state) => state.auth)
+
+  const [showFollowedOnly, setShowFollowedOnly] = useState(false)
 
   useEffect(() => {
     dispatch(fetchPosts())
@@ -21,55 +25,104 @@ export default function Home() {
     }
   }
 
+  const followedUserIds = user?.following?.map((f) => f._id) || []
+
+  const filteredPosts = posts
+    .filter((post) =>
+      showFollowedOnly ? followedUserIds.includes(post.author?._id) : true
+    )
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+
   if (loading) return <p className="profile-loading">Cargando posts...</p>
   if (error) return <p className="profile-loading">{error}</p>
 
   return (
     <div className="home-container">
-      <h1>Posts recientes</h1>
-      {posts.map((post) => {
-        const userLiked = post.likes?.includes('liked')
-        return (
-          <div key={post._id} className="post-card">
-            <div className="post-author">
-              <strong>{post.author?.name || 'Anónimo'}</strong>
-            </div>
-            <div>
-              <img
-                src={post.image ? `${postService.API_URL}/uploads/${post.image}` : DEFAULT_IMAGE}
-                alt="Post"
-                className="post-image"
-              />
-            </div>
-            <p className="post-description">{post.description}</p>
-            <button
-              onClick={() => handleLike(post._id)}
-              disabled={likesLoading[post._id]}
-              className="like-button"
-              aria-label={userLiked ? 'Quitar like' : 'Dar like'}
-              style={{
-                backgroundColor: userLiked ? 'lightgreen' : '#0ef',
-                cursor: likesLoading[post._id] ? 'not-allowed' : 'pointer',
-              }}
-            >
-              👍 {userLiked ? 'Quitar Like' : 'Like'} ({post.likes?.length || 0})
-            </button>
+      <div className="toggle-buttons">
+        <button
+          className={`toggle-button ${!showFollowedOnly ? 'active' : ''}`}
+          onClick={() => setShowFollowedOnly(false)}
+        >
+          Público
+        </button>
+        <button
+          className={`toggle-button ${showFollowedOnly ? 'active' : ''}`}
+          onClick={() => setShowFollowedOnly(true)}
+        >
+          Seguidos
+        </button>
+      </div>
 
-            <div className="comments-section">
-              <h4>Comentarios</h4>
-              {post.comments?.length > 0 ? (
-                post.comments.map((comment) => (
-                  <div key={comment._id} className="comment">
-                    <strong>{comment.author?.name || 'Anon'}</strong>: {comment.text}
+      {filteredPosts.length === 0 ? (
+        <div className="no-followed-posts">
+          {showFollowedOnly
+            ? 'Tus seguidos no han publicado nada aún.'
+            : 'No hay publicaciones disponibles.'}
+        </div>
+      ) : (
+        filteredPosts.map((post) => {
+          const userLiked = post.likes?.includes(user?._id)
+          const lastComment = post.comments?.length
+            ? post.comments[post.comments.length - 1]
+            : null
+
+          const avatarUrl = post.author?.avatar
+            ? `http://localhost:3001/${post.author.avatar}`
+            : DEFAULT_AVATAR
+
+          return (
+            <div key={post._id} className="post-card">
+              <Link
+                to={`/posts/${post._id}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div className="post-author">
+                  <img src={avatarUrl} alt="avatar" className="author-image" />
+                  <strong>{post.author?.name || 'Anónimo'}</strong>
+                </div>
+
+                <div>
+                  <img
+                    src={
+                      post.image
+                        ? `${postService.API_URL}/uploads/${post.image}`
+                        : DEFAULT_POST_IMAGE
+                    }
+                    alt="Post"
+                    className="post-image"
+                  />
+                </div>
+
+                <p className="post-description">{post.description}</p>
+              </Link>
+
+              <button
+                onClick={() => handleLike(post._id)}
+                disabled={likesLoading[post._id]}
+                className="like-button"
+                aria-label={userLiked ? 'Quitar like' : 'Dar like'}
+                style={{
+                  backgroundColor: userLiked ? 'lightgreen' : '#0ef',
+                  cursor: likesLoading[post._id] ? 'not-allowed' : 'pointer',
+                }}
+              >
+                👍 {userLiked ? 'Quitar Like' : 'Like'} ({post.likes?.length || 0})
+              </button>
+
+              <div className="comments-section">
+                <h4>Último comentario</h4>
+                {lastComment && lastComment.content ? (
+                  <div className="comment">
+                    <strong>{lastComment.author?.name || 'Anon'}</strong>: {lastComment.content}
                   </div>
-                ))
-              ) : (
-                <p className="no-comments">No hay comentarios</p>
-              )}
+                ) : (
+                  <p className="no-comments">No hay comentarios</p>
+                )}
+              </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })
+      )}
     </div>
   )
 }
