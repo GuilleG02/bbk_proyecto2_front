@@ -9,7 +9,6 @@ import '../assets/styles/searchpage.scss'
 const DEFAULT_POST_IMAGE = '/default-post-image.jpg'
 const DEFAULT_AVATAR = '/avatar.png'
 
-// Componente buscador
 const SearchBar = () => {
   const navigate = useNavigate()
   const [text, setText] = useState('')
@@ -46,7 +45,6 @@ const SearchPage = () => {
   const { searchType, searchText } = useParams()
   const { user } = useSelector((state) => state.auth)
 
-  // Selectores seguros
   const postsState = useSelector((state) => state.posts) || {}
   const posts = postsState.posts || []
   const postsLoading = postsState.loading || false
@@ -56,13 +54,11 @@ const SearchPage = () => {
   const users = usersState.users || []
   const usersLoading = usersState.loading || false
 
-  // Traer datos al montar
   useEffect(() => {
     dispatch(fetchPosts())
     dispatch(fetchUsers())
   }, [dispatch])
 
-  // Filtrado memoizado
   const filteredPosts = useMemo(() => {
     if (searchType === 'posts' && searchText) {
       return posts.filter((p) =>
@@ -105,7 +101,7 @@ const SearchPage = () => {
                 : DEFAULT_AVATAR
               return (
                 <div key={post._id} className="post-card">
-                  <Link to={`/posts/${post._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <Link to={`/posts/${post._id}`} className="post-link">
                     <div className="post-author">
                       <img src={avatarUrl} alt="avatar" className="author-image" />
                       <strong>{post.author?.name || 'Anónimo'}</strong>
@@ -120,8 +116,7 @@ const SearchPage = () => {
                   <button
                     onClick={() => handleLike(post._id)}
                     disabled={likesLoading[post._id]}
-                    className="like-button"
-                    style={{ backgroundColor: userLiked ? 'lightgreen' : '#0ef' }}
+                    className={`like-button ${userLiked ? 'liked' : ''}`}
                   >
                     👍 {userLiked ? 'Quitar Like' : 'Like'} ({post.likes?.length || 0})
                   </button>
@@ -140,18 +135,14 @@ const SearchPage = () => {
             <p className="profile-loading">No se encontraron usuarios.</p>
           ) : (
             filteredUsers.map((u) => (
-              <div key={u._id} className="post-card">
-                <Link to={`/profile/${u._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <div className="post-author">
-                    <img
-                      src={u.avatar ? `http://localhost:3001/${u.avatar}` : DEFAULT_AVATAR}
-                      alt="avatar"
-                      className="author-image"
-                    />
-                    <strong>{u.name}</strong>
-                  </div>
-                </Link>
-              </div>
+              <Link to={`/profile/${u._id}`} key={u._id} className="user-card">
+                <img
+                  src={u.avatar ? `http://localhost:3001/${u.avatar}` : DEFAULT_AVATAR}
+                  alt="avatar"
+                  className="author-image"
+                />
+                <strong>{u.name}</strong>
+              </Link>
             ))
           )}
         </div>

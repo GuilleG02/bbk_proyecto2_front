@@ -1,17 +1,8 @@
-.search-page {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-}
-
 .search-bar {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 5px;
-  margin-bottom: 30px;
 
   select,
   input {
