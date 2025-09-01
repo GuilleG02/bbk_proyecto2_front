@@ -1,7 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { FiHome, FiUser, FiLogOut } from 'react-icons/fi'
+import { FiHome, FiUser, FiLogOut, FiSearch } from 'react-icons/fi'
+import { FaReact } from 'react-icons/fa'
 import { logout, reset } from '../auth/authSlice'
 import '../assets/styles/theheader.scss'
 
@@ -12,18 +13,22 @@ const TheHeader = () => {
   const handleLogout = async () => {
     await dispatch(logout())
     dispatch(reset())
-    navigate('/auth') // aquí va la ruta pública correcta
+    navigate('/auth')
   }
 
   return (
     <header className="the-header">
       <div className="logo" onClick={() => navigate('/')}>
-        <img src="/snapglow2.png" alt="logo" />
+        <FaReact size={50} color="#0ef" />
       </div>
       <nav className="nav-icons">
         <button onClick={() => navigate('/')} title="Home" aria-label="Home">
           <FiHome />
         </button>
+        <button onClick={() => navigate('/search')} title="Buscar" aria-label="Buscar">
+          <FiSearch />
+        </button>
+
         <button onClick={() => navigate('/profile')} title="Perfil" aria-label="Perfil">
           <FiUser />
         </button>

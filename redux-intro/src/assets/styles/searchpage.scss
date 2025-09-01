@@ -1,0 +1,33 @@
+.search-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px;
+  margin-bottom: 30px;
+
+  select,
+  input {
+    background-color: transparent;
+    border: 1px solid #0ef;
+    color: #0ef;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+
+    &:focus {
+      outline: 2px solid #0bb;
+    }
+  }
+
+  input {
+    width: 200px;
+  }
+}
