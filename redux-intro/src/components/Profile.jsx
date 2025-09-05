@@ -6,7 +6,7 @@ import '../assets/styles/profile.scss'
 import { FiSettings } from 'react-icons/fi'
 
 const DEFAULT_POST_IMAGE = '/default-post-image.jpg'
-const DEFAULT_AVATAR = '/avatar.png' // Avatar por defecto
+const DEFAULT_AVATAR = '/avatar.png'
 
 const Profile = () => {
   const dispatch = useDispatch()
@@ -19,18 +19,22 @@ const Profile = () => {
 
   if (!user) return <p className="profile-loading">Cargando perfil...</p>
 
-  // Avatar principal
   const avatarUrl = user.avatar && user.avatar !== 'null' && user.avatar !== ''
     ? `http://localhost:3001${user.avatar}`
     : DEFAULT_AVATAR
 
   const joinedDate = new Date(user.createdAt).toLocaleDateString()
 
+  // Helper para obtener URL de la imagen del post
+  const getPostImageUrl = (post) => {
+    if (!post.image || post.image === 'null' || post.image === '') return DEFAULT_POST_IMAGE
+    return `http://localhost:3001/uploads/${post.image}`
+  }
+
   return (
     <div className="profile-container">
       <div className="profile-big-card">
 
-        {/* Barra de usuarios seguidos */}
         <div className="following-bar">
           {user.following && user.following.length > 0 ? (
             user.following.map((followedUser, index) => {
@@ -52,7 +56,6 @@ const Profile = () => {
           )}
         </div>
 
-        {/* Perfil izquierdo: Avatar y acciones */}
         <div className="profile-left">
           <div className="profile-card">
             <div className="avatar">
@@ -84,35 +87,29 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Perfil derecho: Posts */}
         <div className="profile-right">
           <h3>Mis Posts</h3>
           {user.posts && user.posts.length > 0 ? (
-            user.posts.map((post) => {
-              const postImageUrl = post.image && post.image !== 'null' && post.image !== ''
-                ? `http://localhost:3001${post.image}`
-                : DEFAULT_POST_IMAGE
-              return (
-                <div key={post._id} className="post-card">
-                  <img
-                    src={postImageUrl}
-                    alt={post.title}
-                    className="post-image"
-                    onClick={() => navigate(`/edit-post/${post._id}`)}
-                    style={{ cursor: 'pointer' }}
-                  />
-                  <h4
-                    className="editable-post"
-                    onClick={() => navigate(`/edit-post/${post._id}`)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {post.title}
-                  </h4>
-                  <p>{post.description}</p>
-                  <small>{new Date(post.createdAt).toLocaleDateString()}</small>
-                </div>
-              )
-            })
+            user.posts.map((post) => (
+              <div key={post._id} className="post-card">
+                <img
+                  src={getPostImageUrl(post)}
+                  alt={post.title || 'Post'}
+                  className="post-image"
+                  onClick={() => navigate(`/edit-post/${post._id}`)}
+                  style={{ cursor: 'pointer' }}
+                />
+                <h4
+                  className="editable-post"
+                  onClick={() => navigate(`/edit-post/${post._id}`)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {post.title}
+                </h4>
+                <p>{post.description}</p>
+                <small>{new Date(post.createdAt).toLocaleDateString()}</small>
+              </div>
+            ))
           ) : (
             <p>Este usuario no tiene posts aún.</p>
           )}
