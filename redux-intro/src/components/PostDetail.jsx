@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPostById, toggleLikePost, addComment } from '../posts/postSlice'
-import { followUser, unfollowUser } from '../users/userSlice' // importa tus acciones
-import { updateUserFollowing } from '../auth/authSlice' // acción para actualizar user.following
+import {
+    fetchPostById,
+    toggleLikePost,
+    addComment
+} from '../posts/postSlice'
+import { followUser, unfollowUser } from '../users/userSlice'
+import { updateUserFollowing } from '../auth/authSlice'
 import '../assets/styles/PostDetail.scss'
 
 const DEFAULT_POST_IMAGE = '/default-post-image.jpg'
 
 const PostDetail = () => {
     const { id } = useParams()
+    const navigate = useNavigate()
     const dispatch = useDispatch()
-    const post = useSelector((state) => state.posts.posts.find((p) => p._id === id))
-    const { user } = useSelector((state) => state.auth)
+    const post = useSelector(state => state.posts.posts.find(p => p._id === id))
+    const { user } = useSelector(state => state.auth)
     const [commentText, setCommentText] = useState('')
     const [loadingComment, setLoadingComment] = useState(false)
     const [loadingFollow, setLoadingFollow] = useState(false)
@@ -27,13 +32,12 @@ const PostDetail = () => {
 
     const author = post.author
     const userLiked = post.likes?.includes(user?._id)
-
-    // Comparar IDs como strings para evitar problemas
     const isFollowing = user?.following?.some(
-        (followingId) => followingId.toString() === author?._id?.toString()
+        fId => fId.toString() === author?._id?.toString()
     )
 
     const handleToggleLike = () => {
+        if (!user) return alert('Debes iniciar sesión para dar like')
         dispatch(toggleLikePost(post._id))
     }
 
@@ -44,42 +48,59 @@ const PostDetail = () => {
             await dispatch(addComment({ postId: post._id, content: commentText })).unwrap()
             setCommentText('')
         } catch (error) {
-            console.error('Error agregando comentario:', error.message || error)
-            alert('Error al agregar el comentario')
+            console.error('Error agregando comentario:', error)
+            alert('Error al agregar comentario')
         }
         setLoadingComment(false)
     }
 
-    const handleFollowToggle = async () => {
-        if (!user) return alert('Debes iniciar sesión para seguir usuarios.')
+    const handleFollowToggle = async (authorId) => {
+        if (!user) {
+            alert('Debes iniciar sesión para seguir usuarios.')
+            return
+        }
+
+        if (!authorId) {
+            console.error('No se recibió un ID de usuario válido para seguir.')
+            return
+        }
+
+        // ✅ Verificación para evitar seguirse a uno mismo
+        if (authorId === user._id) {
+            alert('No puedes seguirte a ti mismo')
+            return
+        }
+
         setLoadingFollow(true)
         try {
             let updatedFollowing
             if (isFollowing) {
-                updatedFollowing = await dispatch(unfollowUser(author._id)).unwrap()
+                updatedFollowing = await dispatch(unfollowUser(authorId)).unwrap()
             } else {
-                updatedFollowing = await dispatch(followUser(author._id)).unwrap()
+                updatedFollowing = await dispatch(followUser(authorId)).unwrap()
             }
-            // Actualizar el estado auth con el array updatedFollowing
             dispatch(updateUserFollowing(updatedFollowing.following))
         } catch (error) {
-            alert(error)
+            console.error('Error siguiendo/deseguiendo usuario:', error)
+            alert(error.message || 'Error al seguir/deseguir usuario')
         }
         setLoadingFollow(false)
     }
 
     return (
         <div className="post-detail-container">
-            <h2>{post.description}</h2>
+            <h2>{post.title}</h2>
+            <p>{post.description}</p>
             <img
                 src={post.image ? `http://localhost:3001/uploads/${post.image}` : DEFAULT_POST_IMAGE}
                 alt="Post"
                 className="post-image-detail"
             />
             <p>Autor: {author?.name || 'Anónimo'}</p>
-            {author && user && (
+
+            {author && user && author._id && (
                 <button
-                    onClick={handleFollowToggle}
+                    onClick={() => handleFollowToggle(author._id)}
                     disabled={loadingFollow}
                     className={isFollowing ? 'following' : ''}
                 >
@@ -97,7 +118,7 @@ const PostDetail = () => {
             <section className="comments-section">
                 <h3>Comentarios</h3>
                 {post.comments?.length === 0 && <p>No hay comentarios</p>}
-                {post.comments?.map((comment) => (
+                {post.comments?.map(comment => (
                     <div key={comment._id} className="comment">
                         <strong>{comment.author?.name || 'Anon'}</strong>: {comment.content}
                     </div>

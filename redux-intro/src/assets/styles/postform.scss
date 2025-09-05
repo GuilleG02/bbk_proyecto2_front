@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.post-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: #000;
+  color: #fff;
+}
+
+.post-form {
+  background: #111;
+  border-radius: 20px;
+  padding: 30px 40px;
+  width: 500px;
+  box-shadow: 0 0 30px #0ef;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.post-form h2 {
+  color: #0ef;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.post-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.post-form input[type='text'],
+.post-form textarea,
+.post-form input[type='file'] {
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #0ef;
+  background: #222;
+  color: #fff;
+  font-size: 15px;
+}
+
+.post-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.post-form button {
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #0ef;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.post-form button:hover {
+  background: #0bb;
+}
+
+.post-form-loading {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+  color: #fff;
+}

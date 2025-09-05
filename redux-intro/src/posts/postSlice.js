@@ -24,11 +24,47 @@ export const fetchPosts = createAsyncThunk('posts/fetchAll', async (_, thunkAPI)
 export const fetchPostById = createAsyncThunk('posts/fetchById', async (postId, thunkAPI) => {
   try {
     const res = await axios.get(`${API_URL}/posts/${postId}`)
-    return res.data
+    return res.data.post || res.data
   } catch (error) {
     return thunkAPI.rejectWithValue('Error al cargar el post')
   }
 })
+
+// Crear post
+export const createPost = createAsyncThunk(
+  'posts/create',
+  async ({ data, token }, thunkAPI) => {
+    try {
+      const res = await axios.post(`${API_URL}/posts`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      return res.data.post
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || 'Error al crear el post')
+    }
+  }
+)
+
+// Actualizar post
+export const updatePost = createAsyncThunk(
+  'posts/update',
+  async ({ id, data, token }, thunkAPI) => {
+    try {
+      const res = await axios.put(`${API_URL}/posts/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      return res.data.post
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || 'Error al actualizar el post')
+    }
+  }
+)
 
 // Toggle Like
 export const toggleLikePost = createAsyncThunk('posts/toggleLike', async (postId, thunkAPI) => {
@@ -53,7 +89,6 @@ export const addComment = createAsyncThunk(
   }
 )
 
-
 const postSlice = createSlice({
   name: 'posts',
   initialState,
@@ -67,6 +102,7 @@ const postSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // fetchPosts
       .addCase(fetchPosts.pending, (state) => {
         state.loading = true
         state.error = null
@@ -80,6 +116,7 @@ const postSlice = createSlice({
         state.error = action.payload
       })
 
+      // fetchPostById
       .addCase(fetchPostById.pending, (state) => {
         state.loading = true
         state.error = null
@@ -99,17 +136,48 @@ const postSlice = createSlice({
         state.error = action.payload
       })
 
+      // createPost
+      .addCase(createPost.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(createPost.fulfilled, (state, action) => {
+        state.posts.push(action.payload)
+        state.loading = false
+      })
+      .addCase(createPost.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+
+      // updatePost
+      .addCase(updatePost.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        const updatedPost = action.payload
+        const index = state.posts.findIndex((p) => p._id === updatedPost._id)
+        if (index !== -1) {
+          state.posts[index] = updatedPost
+        }
+        state.loading = false
+      })
+      .addCase(updatePost.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+
+      // toggleLikePost
       .addCase(toggleLikePost.pending, (state, action) => {
         state.likesLoading[action.meta.arg] = true
       })
       .addCase(toggleLikePost.fulfilled, (state, action) => {
         const updatedPost = action.payload
         const index = state.posts.findIndex((p) => p._id === updatedPost._id)
-
         if (index !== -1) {
           state.posts[index] = updatedPost
         }
-
         state.likesLoading[updatedPost._id] = false
       })
       .addCase(toggleLikePost.rejected, (state, action) => {
@@ -118,7 +186,7 @@ const postSlice = createSlice({
         state.error = action.payload
       })
 
-      // Manejo de comentarios
+      // addComment
       .addCase(addComment.pending, (state) => {
         state.loading = true
         state.error = null

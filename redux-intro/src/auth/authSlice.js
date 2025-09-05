@@ -5,7 +5,6 @@ const rawUser = localStorage.getItem('user')
 const userStorage = rawUser && rawUser !== 'undefined' ? JSON.parse(rawUser) : null
 
 const rawToken = localStorage.getItem('token')
-// token es string plano, no parsear ni modificar
 const tokenStorage = rawToken && rawToken.startsWith('eyJ') ? rawToken : null
 
 const initialState = {
@@ -20,7 +19,7 @@ export const register = createAsyncThunk('auth/register', async (userData, thunk
   try {
     return await authService.register(userData)
   } catch (error) {
-    const message = error.response?.data?.error || 'Error al registrar'
+    const message = error.response?.data?.message || error.message || 'Error al registrar'
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -29,7 +28,7 @@ export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) =
   try {
     return await authService.login(userData)
   } catch (error) {
-    const message = error.response?.data?.error || 'Error al iniciar sesión'
+    const message = error.response?.data?.message || error.message || 'Error al iniciar sesión'
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -38,7 +37,7 @@ export const getProfile = createAsyncThunk('auth/profile', async (_, thunkAPI) =
   try {
     return await authService.getProfile()
   } catch (error) {
-    const message = error.response?.data?.error || 'Error al obtener perfil'
+    const message = error.response?.data?.message || error.message || 'Error al obtener perfil'
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -56,11 +55,8 @@ const authSlice = createSlice({
       state.isSuccess = false
       state.message = ''
     },
-    // Nueva acción para actualizar el following del user
     updateUserFollowing: (state, action) => {
-      if (state.user) {
-        state.user.following = action.payload
-      }
+      if (state.user) state.user.following = action.payload
     },
   },
   extraReducers: (builder) => {

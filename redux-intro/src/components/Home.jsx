@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom' // Importar Link para navegación
+import { Link } from 'react-router-dom'
 import { fetchPosts, toggleLikePost } from '../posts/postSlice'
-import postService from '../posts/postService'
 import '../assets/styles/home.scss'
 
 const DEFAULT_POST_IMAGE = '/default-post-image.jpg'
@@ -66,9 +65,17 @@ export default function Home() {
             ? post.comments[post.comments.length - 1]
             : null
 
+          // Avatar del autor
           const avatarUrl = post.author?.avatar
-            ? `http://localhost:3001/${post.author.avatar}`
+            ? post.author.avatar.startsWith('/uploads')
+              ? `http://localhost:3001${post.author.avatar}` // ya tiene /uploads
+              : `http://localhost:3001/uploads/${post.author.avatar}` // solo nombre
             : DEFAULT_AVATAR
+
+          // Imagen del post
+          const postImageUrl = post.image
+            ? `http://localhost:3001/uploads/${post.image}`
+            : DEFAULT_POST_IMAGE
 
           return (
             <div key={post._id} className="post-card">
@@ -82,15 +89,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <img
-                    src={
-                      post.image
-                        ? `${postService.API_URL}/uploads/${post.image}`
-                        : DEFAULT_POST_IMAGE
-                    }
-                    alt="Post"
-                    className="post-image"
-                  />
+                  <img src={postImageUrl} alt="Post" className="post-image" />
                 </div>
 
                 <p className="post-description">{post.description}</p>

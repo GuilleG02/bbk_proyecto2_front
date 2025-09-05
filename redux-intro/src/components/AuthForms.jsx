@@ -12,6 +12,7 @@ const AuthForms = () => {
   const { isSuccess, isError, message, user } = useSelector((state) => state.auth)
 
   const [activeForm, setActiveForm] = useState('login')
+  const [avatarFile, setAvatarFile] = useState(null)
 
   const [registerData, setRegisterData] = useState({
     name: '',
@@ -31,12 +32,18 @@ const AuthForms = () => {
     setRegisterData(prev => ({ ...prev, [name]: value }))
   }
 
+  const onChangeAvatar = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setAvatarFile(e.target.files[0])
+    }
+  }
+
   const onChangeLogin = (e) => {
     const { name, value } = e.target
     setLoginData(prev => ({ ...prev, [name]: value }))
   }
 
-  const onSubmitRegister = (e) => {
+  const onSubmitRegister = async (e) => {
     e.preventDefault()
     const { name, email, password, password2, age } = registerData
 
@@ -48,7 +55,19 @@ const AuthForms = () => {
       return notification.error({ message: 'Error', description: 'Please fill in all fields' })
     }
 
-    dispatch(register({ name, email, password, age: Number(age) }))
+    try {
+      const formData = new FormData()
+      formData.append('name', name)
+      formData.append('email', email)
+      formData.append('password', password)
+      formData.append('age', age.toString()) // siempre string
+      if (avatarFile) formData.append('avatar', avatarFile)
+
+      await dispatch(register(formData)).unwrap()
+      await dispatch(getProfile())
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const onSubmitLogin = async (e) => {
@@ -63,7 +82,7 @@ const AuthForms = () => {
       await dispatch(login({ email, password })).unwrap()
       await dispatch(getProfile())
     } catch (err) {
-      // error notification ya manejado en slice
+      console.error(err)
     }
   }
 
@@ -82,7 +101,6 @@ const AuthForms = () => {
 
   return (
     <div className={`wrapper ${activeForm === 'register' ? 'active' : ''}`}>
-      {/* Login Form */}
       <div className="form-wrapper sign-in">
         <form onSubmit={onSubmitLogin}>
           <h2>Login</h2>
@@ -94,9 +112,6 @@ const AuthForms = () => {
             <input type="password" name="password" value={loginData.password} onChange={onChangeLogin} required />
             <label>Password</label>
           </div>
-          <div className="remember">
-            <label><input type="checkbox" /> Remember me</label>
-          </div>
           <button type="submit">Login</button>
           <div className="signUp-link">
             <p>Don't have an account? <a href="#!" onClick={() => setActiveForm('register')}>Sign Up</a></p>
@@ -104,7 +119,6 @@ const AuthForms = () => {
         </form>
       </div>
 
-      {/* Register Form */}
       <div className="form-wrapper sign-up">
         <form onSubmit={onSubmitRegister}>
           <h2>Sign Up</h2>
@@ -128,8 +142,9 @@ const AuthForms = () => {
             <input type="number" name="age" value={registerData.age} onChange={onChangeRegister} required />
             <label>Age</label>
           </div>
-          <div className="remember">
-            <label><input type="checkbox" /> I agree to the terms & conditions</label>
+          <div className="input-group">
+            <input type="file" name="avatar" accept="image/*" onChange={onChangeAvatar} />
+            <label>Avatar (optional)</label>
           </div>
           <button type="submit">Sign Up</button>
           <div className="signUp-link">

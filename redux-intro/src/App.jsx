@@ -7,6 +7,7 @@ import PostDetail from './components/PostDetail'
 import SearchPage from './components/SearchPage'
 import TheHeader from './components/TheHeader'
 import PrivateRoute from './components/PrivateRoute'
+import PostForm from './components/PostForm' // importamos PostForm
 
 function AppContent() {
   const location = useLocation()
@@ -24,6 +25,10 @@ function AppContent() {
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route path="/edit-profile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
           <Route path="/posts/:id" element={<PrivateRoute><PostDetail /></PrivateRoute>} />
+
+          {/* Rutas para crear y editar posts */}
+          <Route path="/create-post" element={<PrivateRoute><PostForm /></PrivateRoute>} />
+          <Route path="/edit-post/:id" element={<PrivateRoute><PostForm /></PrivateRoute>} />
 
           <Route path="/search" element={<PrivateRoute><SearchPage /></PrivateRoute>} />
           <Route path="/search/:searchType/:searchText?" element={<PrivateRoute><SearchPage /></PrivateRoute>} />
