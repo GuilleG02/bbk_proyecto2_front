@@ -17,6 +17,7 @@ const PostForm = () => {
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [image, setImage] = useState(null)
   const [loading, setLoading] = useState(false)
 
   // Si es edición, cargar datos del post
@@ -26,6 +27,7 @@ const PostForm = () => {
     } else if (post) {
       setTitle(post.title || '')
       setDescription(post.description || '')
+      setImage(post.image || null)
     }
   }, [id, post, dispatch])
 
@@ -33,16 +35,22 @@ const PostForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!title.trim() || !description.trim()) {
-      return alert('Título y descripción son obligatorios')
+    if (!description.trim()) {
+      return alert('La descripción es obligatoria')
     }
 
     setLoading(true)
     try {
       const formData = new FormData()
-      formData.append('title', title)
+      formData.append('title', title) // Se envía al backend aunque no se muestre
       formData.append('description', description)
-      formData.append('image', DEFAULT_POST_IMAGE) // imagen por defecto
+      if (image instanceof File) {
+        formData.append('image', image)
+      } else if (image) {
+        formData.append('image', image)
+      } else {
+        formData.append('image', DEFAULT_POST_IMAGE)
+      }
 
       if (id) {
         await dispatch(updatePost({ id, data: formData, token })).unwrap()
@@ -60,11 +68,27 @@ const PostForm = () => {
     setLoading(false)
   }
 
+  const handleDeletePost = async () => {
+    if (!window.confirm('¿Estás seguro de eliminar este post?')) return
+    try {
+      await fetch(`http://localhost:3001/posts/${post._id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      alert('Post eliminado')
+      navigate('/')
+    } catch (error) {
+      console.error(error)
+      alert('Error al eliminar post')
+    }
+  }
+
   return (
     <div className="post-form-container">
       <h2>{id ? 'Editar Post' : 'Crear Post'}</h2>
       <form onSubmit={handleSubmit} className="post-form">
-        <label>
+        {/* Título solo se envía al backend, no se muestra */}
+        {/* <label>
           Título:
           <input
             type="text"
@@ -72,7 +96,7 @@ const PostForm = () => {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Título del post"
           />
-        </label>
+        </label> */}
 
         <label>
           Descripción:
@@ -83,9 +107,37 @@ const PostForm = () => {
           />
         </label>
 
+        <label>
+          Imagen del post:
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+        </label>
+
+        {image && !(image instanceof File) && (
+          <img
+            src={`http://localhost:3001/uploads/${image}`}
+            alt="Vista previa"
+            style={{ width: '200px', marginTop: '10px' }}
+          />
+        )}
+
         <button type="submit" disabled={loading}>
           {loading ? 'Procesando...' : id ? 'Actualizar Post' : 'Crear Post'}
         </button>
+
+        {id && (
+          <button
+            type="button"
+            onClick={handleDeletePost}
+            className="delete-button"
+            style={{ marginTop: '10px', backgroundColor: 'red', color: 'white' }}
+          >
+            Eliminar Post
+          </button>
+        )}
       </form>
     </div>
   )
