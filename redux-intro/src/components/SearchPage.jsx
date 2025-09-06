@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { fetchPosts, toggleLikePost } from '../posts/postSlice'
-import { fetchUsers } from '../users/usersSlice'
+import { fetchUsers, followUser, unfollowUser } from '../usersSearch/usersSearchSlice'
 import postService from '../posts/postService'
 import '../assets/styles/searchpage.scss'
 
@@ -45,19 +45,23 @@ const SearchPage = () => {
   const { searchType, searchText } = useParams()
   const { user } = useSelector((state) => state.auth)
 
+  // POSTS
   const postsState = useSelector((state) => state.posts) || {}
   const posts = postsState.posts || []
   const postsLoading = postsState.loading || false
   const likesLoading = postsState.likesLoading || {}
 
-  const usersState = useSelector((state) => state.users) || {}
+  // USERS
+  const usersState = useSelector((state) => state.usersSearch) || {}
   const users = usersState.users || []
   const usersLoading = usersState.loading || false
 
   useEffect(() => {
     dispatch(fetchPosts())
-    dispatch(fetchUsers())
-  }, [dispatch])
+    if (searchType === 'users') {
+      dispatch(fetchUsers(searchText || '')) // filtra por nombre
+    }
+  }, [dispatch, searchType, searchText])
 
   const filteredPosts = useMemo(() => {
     if (searchType === 'posts' && searchText) {
@@ -81,6 +85,14 @@ const SearchPage = () => {
     if (!likesLoading[postId]) dispatch(toggleLikePost(postId))
   }
 
+  const handleFollowToggle = (u) => {
+    if (u.following) {
+      dispatch(unfollowUser(u._id))
+    } else {
+      dispatch(followUser(u._id))
+    }
+  }
+
   return (
     <div className="search-page">
       <SearchBar />
@@ -97,8 +109,14 @@ const SearchPage = () => {
             filteredPosts.map((post) => {
               const userLiked = post.likes?.includes(user?._id)
               const avatarUrl = post.author?.avatar
-                ? `http://localhost:3001/${post.author.avatar}`
+                ? post.author.avatar.startsWith('/uploads')
+                  ? `http://localhost:3001${post.author.avatar}`
+                  : `http://localhost:3001/uploads/${post.author.avatar}`
                 : DEFAULT_AVATAR
+              const postImageUrl = post.image
+                ? `http://localhost:3001/uploads/${post.image}`
+                : DEFAULT_POST_IMAGE
+
               return (
                 <div key={post._id} className="post-card">
                   <Link to={`/posts/${post._id}`} className="post-link">
@@ -106,11 +124,7 @@ const SearchPage = () => {
                       <img src={avatarUrl} alt="avatar" className="author-image" />
                       <strong>{post.author?.name || 'Anónimo'}</strong>
                     </div>
-                    <img
-                      src={post.image ? `${postService.API_URL}/uploads/${post.image}` : DEFAULT_POST_IMAGE}
-                      alt="Post"
-                      className="post-image"
-                    />
+                    <img src={postImageUrl} alt="Post" className="post-image" />
                     <p className="post-description">{post.description}</p>
                   </Link>
                   <button
@@ -134,16 +148,28 @@ const SearchPage = () => {
           ) : filteredUsers.length === 0 ? (
             <p className="profile-loading">No se encontraron usuarios.</p>
           ) : (
-            filteredUsers.map((u) => (
-              <Link to={`/profile/${u._id}`} key={u._id} className="user-card">
-                <img
-                  src={u.avatar ? `http://localhost:3001/${u.avatar}` : DEFAULT_AVATAR}
-                  alt="avatar"
-                  className="author-image"
-                />
-                <strong>{u.name}</strong>
-              </Link>
-            ))
+            filteredUsers.map((u) => {
+              const avatarUrl = u.avatar
+                ? u.avatar.startsWith('/uploads')
+                  ? `http://localhost:3001${u.avatar}`
+                  : `http://localhost:3001/uploads/${u.avatar}`
+                : DEFAULT_AVATAR
+
+              return (
+                <div key={u._id} className="user-card">
+                  <Link to={`/profile/${u._id}`} className="user-link">
+                    <img src={avatarUrl} alt="avatar" className="author-image" />
+                    <strong>{u.name}</strong>
+                  </Link>
+                  {/* <button
+                    className={`follow-button ${u.following ? 'following' : ''}`}
+                    onClick={() => handleFollowToggle(u)}
+                  >
+                    {u.following ? 'Siguiendo' : 'Seguir'}
+                  </button> */}
+                </div>
+              )
+            })
           )}
         </div>
       )}
