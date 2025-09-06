@@ -1,39 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
 * {
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
 
 body {
-  background: #000;
+  background: var(--color-bg);
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .post-form-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 40px 20px;
-  background: #000;
-  color: #fff;
+  align-items: center; /* centra verticalmente */
+  width: 100%;
+  padding: 20px;
+  color: var(--color-text);
 }
 
 .post-form {
-  background: #111;
-  border-radius: 20px;
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius);
   padding: 30px 40px;
   width: 500px;
-  box-shadow: 0 0 30px #0ef;
+  box-shadow: var(--shadow-light);
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 .post-form h2 {
-  color: #0ef;
+  color: var(--color-text);
   text-align: center;
   margin-bottom: 20px;
 }
@@ -42,7 +43,7 @@ body {
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  color: #ccc;
+  color: var(--color-text-muted);
 }
 
 .post-form input[type='text'],
@@ -51,9 +52,9 @@ body {
   margin-top: 8px;
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid #0ef;
-  background: #222;
-  color: #fff;
+  border: 1px solid var(--color-text);
+  background: var(--color-card-bg); /* eliminamos negro */
+  color: var(--color-text);
   font-size: 15px;
 }
 
@@ -66,20 +67,20 @@ body {
   padding: 12px;
   border: none;
   border-radius: 12px;
-  background: #0ef;
-  color: #000;
+  background: var(--color-text);
+  color: var(--color-bg);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.3s ease;
-}
 
-.post-form button:hover {
-  background: #0bb;
+  &:hover {
+    background: var(--color-text-muted);
+  }
 }
 
 .post-form-loading {
   text-align: center;
   font-size: 18px;
   margin-top: 50px;
-  color: #fff;
+  color: var(--color-text);
 }

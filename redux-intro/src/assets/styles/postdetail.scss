@@ -1,31 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-* {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+* { 
+  box-sizing: border-box; 
+  font-family: 'Poppins', sans-serif; 
 }
 
 body {
-  background: #000;
+  background: var(--color-bg);
   margin: 0;
   padding: 0;
-  color: #ccc;
+  color: var(--color-text-muted);
 }
 
 .post-detail-container {
   max-width: 700px;
   margin: 40px auto;
   padding: 0 20px 60px;
-  background: #111;
-  border-radius: 16px;
-  box-shadow: 0 0 25px #0ef;
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 .post-detail-container h2 {
-  color: #0ef;
+  color: var(--color-accent);
   font-weight: 600;
   margin: 20px 0 10px;
   text-align: center;
@@ -35,79 +33,76 @@ body {
   width: 100%;
   max-height: 450px;
   object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 0 15px #0ef;
-  background: #222;
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 15px rgba(245,166,35,0.3);
+  background: var(--color-card-bg);
   align-self: center;
 }
 
-.post-detail-container p {
-  color: #ccc;
-  font-size: 16px;
-  text-align: center;
+.post-detail-container p { 
+  color: var(--color-text-muted); 
+  font-size: 16px; 
+  text-align: center; 
 }
 
-/* Botón base */
 button {
   align-self: center;
-  background-color: #0ef;
-  color: #000;
+  background-color: var(--color-accent);
+  color: var(--color-bg);
   border: none;
   padding: 12px 24px;
-  border-radius: 10px;
+  border-radius: var(--border-radius);
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
   user-select: none;
   min-width: 150px;
+
+  &:hover:not(:disabled) { 
+    background-color: var(--color-accent-hover); 
+  }
+  &:disabled { 
+    opacity: 0.6; 
+    cursor: not-allowed; 
+  }
 }
 
-button:hover:not(:disabled) {
-  background-color: #0bb;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Estilo para botón Follow cuando está activo */
 button.following {
-  background-color: orange;
-  color: #000;
-}
+  background-color: #e5941f;
+  color: var(--color-bg);
 
-button.following:hover:not(:disabled) {
-  background-color: darkorange;
+  &:hover:not(:disabled) { 
+    background-color: #c77f17; 
+  }
 }
 
 .comments-section {
   margin-top: 20px;
   padding-top: 15px;
-  border-top: 2px solid #0ef;
+  border-top: 2px solid var(--color-accent);
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
 .comments-section h3 {
-  color: #0ef;
+  color: var(--color-accent);
   margin-bottom: 12px;
   text-align: center;
 }
 
 .comment {
-  color: #aaa;
+  color: var(--color-text-muted);
   margin-left: 15px;
-}
 
-.comment strong {
-  color: #0ef;
-  margin-right: 8px;
+  strong { 
+    color: var(--color-accent); 
+    margin-right: 8px; 
+  }
 }
 
 .no-comments {
-  color: #555;
+  color: var(--color-text-muted);
   margin-left: 15px;
   font-style: italic;
   text-align: center;
@@ -118,27 +113,27 @@ button.following:hover:not(:disabled) {
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
-}
 
-.add-comment textarea {
-  resize: vertical;
-  min-height: 70px;
-  padding: 12px 15px;
-  border-radius: 10px;
-  border: 1px solid #0ef;
-  background: #222;
-  color: #ccc;
-  font-size: 15px;
-  font-family: 'Poppins', sans-serif;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
+  textarea {
+    resize: vertical;
+    min-height: 70px;
+    padding: 12px 15px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-accent);
+    background: var(--color-card-bg);
+    color: var(--color-text);
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: border-color 0.3s ease;
 
-.add-comment textarea:focus {
-  border-color: #0bb;
-}
+    &:focus { 
+      border-color: var(--color-accent-hover); 
+    }
+  }
 
-.add-comment button {
-  align-self: flex-end;
-  min-width: 140px;
+  button { 
+    align-self: flex-end; 
+    min-width: 140px; 
+  }
 }

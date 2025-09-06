@@ -1,14 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
 * {
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
 
 body {
-  background: #000;
+  background: var(--color-bg);
   margin: 0;
   padding: 0;
+  color: var(--color-text);
 }
 
 .profile-container {
@@ -17,31 +16,25 @@ body {
   align-items: center;
   min-height: 100vh;
   padding: 20px;
-  background: #000;
 }
 
 .profile-big-card {
-  background: #111;
-  border-radius: 20px;
-  padding: 30px 40px 40px 40px;
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius);
+  padding: 30px 40px 40px;
   width: 900px;
-  box-shadow: 0 0 30px #0ef;
-  color: #fff;
+  box-shadow: var(--shadow-light);
+  color: var(--color-text);
   display: flex;
-  gap: 40px;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: auto;
   flex-direction: column;
+  gap: 40px;
 }
 
 .following-bar {
   display: flex;
   gap: 12px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #0ef;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 25px;
   overflow-x: auto;
 }
@@ -50,17 +43,17 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 2px solid #0ef;
-  box-shadow: 0 0 6px #0ef;
+  border: 2px solid var(--color-text);
+  box-shadow: 0 0 6px var(--color-text);
   object-fit: cover;
   cursor: pointer;
   transition: transform 0.2s ease;
   flex-shrink: 0;
-}
 
-.following-avatar:hover {
-  transform: scale(1.2);
-  border-color: #0bb;
+  &:hover {
+    transform: scale(1.2);
+    border-color: var(--color-text-muted);
+  }
 }
 
 .no-following {
@@ -81,13 +74,12 @@ body {
 
 .profile-card {
   position: relative;
-  background: #111;
-  border-radius: 20px;
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius);
   padding: 40px;
-  width: 100%;
   text-align: center;
-  box-shadow: 0 0 30px #0ef;
-  color: #fff;
+  box-shadow: var(--shadow-light);
+  color: var(--color-text);
 }
 
 .avatar {
@@ -96,8 +88,8 @@ body {
   margin: 0 auto 25px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #0ef;
-  box-shadow: 0 0 12px #0ef;
+  border: 2px solid var(--color-text);
+  box-shadow: 0 0 12px var(--color-text);
 }
 
 .avatar img {
@@ -109,7 +101,7 @@ body {
 h2 {
   margin-bottom: 25px;
   font-size: 24px;
-  color: #0ef;
+  color: var(--color-text);
 }
 
 .profile-info {
@@ -124,24 +116,24 @@ h2 {
   justify-content: space-between;
   width: 100%;
   font-size: 15px;
-  color: #ccc;
-}
+  color: var(--color-text-muted);
 
-.profile-field strong {
-  color: #0ef;
-  width: 130px;
-  text-align: left;
-}
+  strong {
+    color: var(--color-text);
+    width: 130px;
+    text-align: left;
+  }
 
-.profile-field span {
-  flex: 1;
-  text-align: right;
-  color: #fff;
+  span {
+    flex: 1;
+    text-align: right;
+    color: var(--color-text);
+  }
 }
 
 .profile-loading {
   text-align: center;
-  color: #fff;
+  color: var(--color-text);
   font-size: 18px;
   margin-top: 50px;
 }
@@ -151,7 +143,7 @@ h2 {
   border: none;
   padding: 8px 16px;
   font-size: 20px;
-  color: #0ef;
+  color: var(--color-text);
   cursor: pointer;
   margin-top: 30px;
   border-radius: 8px;
@@ -159,34 +151,30 @@ h2 {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-}
 
-.edit-btn:hover {
-  color: #0bb;
-}
-
-.edit-btn svg {
-  pointer-events: none;
+  &:hover {
+    color: var(--color-text-muted);
+  }
 }
 
 .post-card {
-  background: #222;
-  border-radius: 12px;
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius);
   padding: 15px;
   margin-bottom: 20px;
-  box-shadow: 0 0 10px #0ef;
-}
+  box-shadow: var(--shadow-light);
 
-.post-card h4 {
-  margin: 0 0 8px 0;
-  color: #0ef;
-}
+  h4 {
+    margin: 0 0 8px;
+    color: var(--color-text);
+  }
 
-.post-card p {
-  margin: 0 0 12px 0;
-  color: #ccc;
-}
+  p {
+    margin: 0 0 12px;
+    color: var(--color-text-muted);
+  }
 
-.post-card small {
-  color: #555;
+  small {
+    color: #777;
+  }
 }

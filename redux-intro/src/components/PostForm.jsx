@@ -85,7 +85,7 @@ const PostForm = () => {
 
   return (
     <div className="post-form-container">
-      <h2>{id ? 'Editar Post' : 'Crear Post'}</h2>
+      {/* <h2>{id ? 'Editar Post' : 'Crear Post'}</h2> */}
       <form onSubmit={handleSubmit} className="post-form">
         {/* Título solo se envía al backend, no se muestra */}
         {/* <label>

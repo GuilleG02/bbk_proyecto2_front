@@ -114,6 +114,7 @@ const AuthForms = () => {
           </div>
           <button type="submit">Login</button>
           <div className="signUp-link">
+            <br></br>
             <p>Don't have an account? <a href="#!" onClick={() => setActiveForm('register')}>Sign Up</a></p>
           </div>
         </form>
@@ -148,6 +149,7 @@ const AuthForms = () => {
           </div>
           <button type="submit">Sign Up</button>
           <div className="signUp-link">
+                        <br></br>
             <p>Already have an account? <a href="#!" onClick={() => setActiveForm('login')}>Sign In</a></p>
           </div>
         </form>

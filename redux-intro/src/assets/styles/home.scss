@@ -1,171 +1,148 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-* {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-body {
-  background: #000;
-  margin: 0;
-  padding: 0;
-  color: #ccc;
-}
+$text-dark: var(--color-text);
+$text-medium: var(--color-text-muted);
+$text-light: #777;
+$card-bg: var(--color-card-bg);
 
 .home-container {
   max-width: 900px;
-  margin: 40px auto;
+  margin: 100px auto 40px;
   padding: 0 20px;
-  min-height: 3900px; // 👈 asegura que el contenido tenga altura suficiente
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
 h1 {
-  color: #0ef;
   font-weight: 600;
   margin-bottom: 30px;
   text-align: center;
+  color: $text-dark;
 }
 
 .post-card {
-  background: #111;
-  border-radius: 16px;
+  background: $card-bg;
+  border-radius: var(--border-radius);
   padding: 20px 25px;
   margin-bottom: 20px;
-  box-shadow: 0 0 20px #0ef;
-  transition: box-shadow 0.3s ease;
-}
+  box-shadow: var(--shadow-light);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 
-.post-card:hover {
-  box-shadow: 0 0 30px #0bb;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
 }
 
 .post-author {
   font-weight: 600;
-  color: #0ef;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+  color: $text-dark;
 }
 
 .post-image {
   width: 100%;
-  max-height: 400px;
+  max-height: 450px;
   object-fit: cover;
   border-radius: 12px;
   margin: 15px 0;
-  box-shadow: 0 0 10px #0ef;
-  background: #222;
+  background: #2a2a2a;
 }
 
 .post-description {
-  color: #ccc;
+  color: $text-medium;
   margin-bottom: 15px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .like-button {
-  background-color: #0ef;
-  color: #000;
+  background-color: #555; /* menos contraste que el negro neon */
+  color: #fff;
   border: none;
   padding: 10px 18px;
-  border-radius: 8px;
+  border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  user-select: none;
-}
+  transition: background-color 0.3s;
 
-.like-button:hover:not(:disabled) {
-  background-color: #0bb;
-}
+  &:hover:not(:disabled) {
+    background-color: #444; /* tono más profesional */
+  }
 
-.like-button:disabled {
-  background-color: lightgreen;
-  cursor: default;
+  &:disabled {
+    background-color: #17bf63;
+    cursor: default;
+  }
 }
 
 .comments-section {
   margin-top: 25px;
-}
 
-.comments-section h4 {
-  color: #0ef;
-  margin-bottom: 12px;
+  h4 {
+    color: $text-dark;
+    margin-bottom: 12px;
+  }
 }
 
 .comment {
   margin-left: 15px;
   margin-bottom: 10px;
-  color: #aaa;
-}
+  color: $text-medium;
 
-.comment strong {
-  color: #0ef;
-  margin-right: 6px;
+  strong {
+    color: $text-dark;
+    margin-right: 6px;
+  }
 }
 
 .no-comments {
-  color: #555;
+  color: $text-light;
   margin-left: 15px;
   font-style: italic;
 }
 
-.profile-loading {
-  text-align: center;
-  color: #0ef;
-  font-size: 18px;
-  margin-top: 50px;
-}
-
-/* Toggle buttons */
 .toggle-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-bottom: 30px;
-  position: relative;
-  z-index: 2;
 }
 
 .toggle-button {
   padding: 10px 20px;
-  border: 2px solid #0ef;
+  border: 2px solid $text-dark;
   background: transparent;
-  color: #0ef;
+  color: $text-dark;
   font-weight: bold;
-  border-radius: 20px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 120px; // 👈 evita que se achiquen los botones
+  min-width: 120px;
   text-align: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: $text-dark;
+    color: $text-light;
+  }
+
+  &.active {
+    background-color: $text-dark;
+    color: #fff; /* letras blancas cuando está seleccionado */
+  }
 }
 
-.toggle-button.active {
-  background-color: #0ef;
-  color: #000;
-}
-
-.toggle-button:hover {
-  background-color: #0bb;
-  color: #000;
-}
-
-/* Imagen autor */
 .author-image {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   margin-right: 10px;
-  vertical-align: middle;
-  box-shadow: 0 0 5px #0ef;
+  border: 2px solid rgba(255,255,255,0.2);
 }
 
-/* Mensaje si no hay posts en seguidos */
 .no-followed-posts {
-  color: #555;
+  color: $text-light;
   text-align: center;
   font-style: italic;
   margin-top: 100px;

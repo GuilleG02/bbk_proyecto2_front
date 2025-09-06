@@ -101,12 +101,15 @@ export default function Home() {
                 className="like-button"
                 aria-label={userLiked ? 'Quitar like' : 'Dar like'}
                 style={{
-                  backgroundColor: userLiked ? 'lightgreen' : '#0ef',
+                  backgroundColor: userLiked ? 'var(--color-accent-hover)' : 'var(--color-card-bg)',
+                  color: userLiked ? 'var(--color-bg)' : 'var(--color-text)',
+                  border: userLiked ? 'none' : '1px solid var(--color-text-muted)',
                   cursor: likesLoading[post._id] ? 'not-allowed' : 'pointer',
                 }}
               >
                 👍 {userLiked ? 'Quitar Like' : 'Like'} ({post.likes?.length || 0})
               </button>
+
 
               <div className="comments-section">
                 <h4>Último comentario</h4>

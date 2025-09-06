@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-
 * {
   margin: 0;
   padding: 0;
@@ -12,19 +10,18 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #000;
-  padding: 20px; // Espacio alrededor en móviles
+  background: var(--color-bg);
+  padding: 20px;
 }
 
 .wrapper {
   position: relative;
   width: 320px;
   height: 500px;
-  background: #000;
-  box-shadow: 0 0 30px #0ef;
-  border-radius: 16px;
+  background: var(--color-card-bg);
+  box-shadow: var(--shadow-light);
+  border-radius: var(--border-radius);
   overflow: hidden;
-  padding: 0;
 }
 
 .form-wrapper {
@@ -37,32 +34,18 @@ body {
   transition: transform 0.8s ease-in-out;
   overflow-y: auto;
 
-  &.sign-in {
-    transform: translateX(0);
-    z-index: 2;
-  }
-
-  &.sign-up {
-    transform: translateX(100%);
-    z-index: 1;
-  }
+  &.sign-in { transform: translateX(0); z-index: 2; }
+  &.sign-up { transform: translateX(100%); z-index: 1; }
 }
 
 .wrapper.active {
-  .form-wrapper.sign-in {
-    transform: translateX(-100%);
-    z-index: 1;
-  }
-
-  .form-wrapper.sign-up {
-    transform: translateX(0);
-    z-index: 2;
-  }
+  .form-wrapper.sign-in { transform: translateX(-100%); z-index: 1; }
+  .form-wrapper.sign-up { transform: translateX(0); z-index: 2; }
 }
 
 h2 {
   font-size: 22px;
-  color: #fff;
+  color: var(--color-text);
   text-align: center;
   margin-bottom: 20px;
 }
@@ -70,13 +53,13 @@ h2 {
 .input-group {
   position: relative;
   margin: 18px 0;
-  border-bottom: 1.5px solid #fff;
+  border-bottom: 1.5px solid var(--color-text-muted);
 
   input {
     width: 100%;
     height: 32px;
     font-size: 14px;
-    color: #fff;
+    color: var(--color-text);
     padding: 0 4px;
     background: transparent;
     border: none;
@@ -84,11 +67,7 @@ h2 {
 
     &:focus,
     &:valid {
-      & ~ label {
-        top: -6px;
-        font-size: 11px;
-        color: #0ef;
-      }
+      & ~ label { top: -6px; font-size: 11px; color: var(--color-accent); }
     }
   }
 
@@ -98,69 +77,60 @@ h2 {
     left: 4px;
     transform: translateY(-50%);
     font-size: 14px;
-    color: #fff;
+    color: var(--color-text-muted);
     pointer-events: none;
     transition: 0.3s;
   }
 }
 
-.remember {
-  margin: 8px 0 12px 4px;
+.remember label {
+  color: var(--color-text-muted);
+  font-size: 12px;
 
-  label {
-    color: #fff;
-    font-size: 12px;
-
-    input[type='checkbox'] {
-      accent-color: #0ef;
-      margin-right: 4px;
-    }
+  input[type='checkbox'] { 
+    accent-color: var(--color-accent); 
+    margin-right: 4px; 
   }
 }
 
 button {
-  position: relative;
   width: 100%;
   height: 34px;
-  background: #0ef;
-  box-shadow: 0 0 8px #0ef;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px rgba(245,166,35,0.4); /* más sutil */
   font-size: 14px;
-  color: #000;
+  color: var(--color-bg);
   font-weight: 500;
   cursor: pointer;
   border-radius: 24px;
   border: none;
   outline: none;
   margin-top: 10px;
-  transition: background-color 0.3s;
-
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s;
 
-  &:hover {
-    background-color: #0bb;
+  &:hover { 
+    background-color: var(--color-accent-hover); 
+    box-shadow: 0 0 6px rgba(245,166,35,0.3);
   }
 }
 
-
-.signUp-link {
+.signUp-link p {
+  color: var(--color-text);
   font-size: 12px;
   text-align: center;
-  margin: 16px 0;
 
-  p {
-    color: #fff;
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
 
-    a {
-      color: #0ef;
-      text-decoration: none;
-      font-weight: 500;
-      cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-      }
+    &:hover { 
+      text-decoration: underline; 
+      color: var(--color-accent-hover);
     }
   }
 }

@@ -19,7 +19,7 @@ const TheHeader = () => {
   return (
     <header className="the-header">
       <div className="logo" onClick={() => navigate('/')}>
-        <FaReact size={50} color="#0ef" />
+        <FaReact size={50} color="##D1D1D1" />
       </div>
       <nav className="nav-icons">
         <button onClick={() => navigate('/')} title="Home" aria-label="Home">
