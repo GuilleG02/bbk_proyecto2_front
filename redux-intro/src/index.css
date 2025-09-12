@@ -9,7 +9,7 @@
   --color-text-muted: #aaa;
   --color-bg: #121212;
   --color-card-bg: #1e1e1e;
-  --color-accent: #f5a623; /* color cálido */
+  --color-accent: #f5a623; 
   --color-accent-hover: #e5941f;
   --border-radius: 12px;
   --shadow-light: 0 2px 6px rgba(0,0,0,0.4);
@@ -55,21 +55,21 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--color-card-bg); /* fondo uniforme */
+  background-color: var(--color-card-bg); 
   color: var(--color-text);
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
 button:hover {
-  background-color: rgba(255, 255, 255, 0.05); /* sutil, profesional */
-  border-color: var(--color-text-muted); /* tono neutro */
-  color: var(--color-text); /* mantener legible */
+  background-color: rgba(255, 255, 255, 0.05); 
+  border-color: var(--color-text-muted); 
+  color: var(--color-text); 
 }
 
 button:focus,
 button:focus-visible {
-  outline: none; /* elimina reborde azul */
+  outline: none; 
 }
 
 h1 {
@@ -77,7 +77,6 @@ h1 {
   line-height: 1.1;
 }
 
-/* 🌙 Modo claro */
 @media (prefers-color-scheme: light) {
   :root {
     --color-text: #111;
@@ -98,11 +97,10 @@ h1 {
   }
 }
 
-/* Iconos de la cabecera */
 .nav-icons button {
   color: var(--color-text-muted);
 }
 
 .nav-icons button:hover {
-  color: var(--color-text); /* cambio profesional, sin neón */
+  color: var(--color-text); 
 }

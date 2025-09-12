@@ -96,12 +96,10 @@ const postSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // fetchPosts
       .addCase(fetchPosts.pending, (state) => { state.loading = true; state.error = null })
       .addCase(fetchPosts.fulfilled, (state, action) => { state.posts = action.payload; state.loading = false })
       .addCase(fetchPosts.rejected, (state, action) => { state.loading = false; state.error = action.payload })
 
-      // fetchPostById
       .addCase(fetchPostById.pending, (state) => { state.loading = true; state.error = null })
       .addCase(fetchPostById.fulfilled, (state, action) => {
         const post = action.payload
@@ -112,12 +110,10 @@ const postSlice = createSlice({
       })
       .addCase(fetchPostById.rejected, (state, action) => { state.loading = false; state.error = action.payload })
 
-      // createPost
       .addCase(createPost.pending, (state) => { state.loading = true; state.error = null })
       .addCase(createPost.fulfilled, (state, action) => { state.posts.push(action.payload); state.loading = false })
       .addCase(createPost.rejected, (state, action) => { state.loading = false; state.error = action.payload })
 
-      // updatePost
       .addCase(updatePost.pending, (state) => { state.loading = true; state.error = null })
       .addCase(updatePost.fulfilled, (state, action) => {
         const updatedPost = action.payload
@@ -127,7 +123,6 @@ const postSlice = createSlice({
       })
       .addCase(updatePost.rejected, (state, action) => { state.loading = false; state.error = action.payload })
 
-      // toggleLikePost
       .addCase(toggleLikePost.pending, (state, action) => { state.likesLoading[action.meta.arg] = true })
       .addCase(toggleLikePost.fulfilled, (state, action) => {
         const updatedPost = action.payload
@@ -141,7 +136,6 @@ const postSlice = createSlice({
         state.error = action.payload
       })
 
-      // addComment
       .addCase(addComment.pending, (state) => { state.loading = true; state.error = null })
       .addCase(addComment.fulfilled, (state, action) => {
         const { postId, comment } = action.payload

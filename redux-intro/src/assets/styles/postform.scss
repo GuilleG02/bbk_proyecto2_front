@@ -16,7 +16,7 @@ body {
 .post-form-container {
   display: flex;
   justify-content: center;
-  align-items: center; /* centra verticalmente */
+  align-items: center; 
   width: 100%;
   padding: 20px;
   color: var(--color-text);
@@ -53,7 +53,7 @@ body {
   padding: 10px;
   border-radius: 10px;
   border: 1px solid var(--color-text);
-  background: var(--color-card-bg); /* eliminamos negro */
+  background: var(--color-card-bg); 
   color: var(--color-text);
   font-size: 15px;
 }

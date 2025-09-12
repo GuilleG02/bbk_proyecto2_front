@@ -60,7 +60,7 @@ const AuthForms = () => {
       formData.append('name', name)
       formData.append('email', email)
       formData.append('password', password)
-      formData.append('age', age.toString()) // siempre string
+      formData.append('age', age.toString()) 
       if (avatarFile) formData.append('avatar', avatarFile)
 
       await dispatch(register(formData)).unwrap()

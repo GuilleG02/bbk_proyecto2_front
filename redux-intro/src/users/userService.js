@@ -7,7 +7,7 @@ const followUser = async (userId) => {
   const res = await axios.post(`${API_URL}/users/${userId}/follow`, {}, {
     headers: { Authorization: `Bearer ${token}` }
   });
-  return res.data; // espera que res.data incluya el usuario actualizado con "following"
+  return res.data; 
 };
 
 const unfollowUser = async (userId) => {
@@ -15,7 +15,7 @@ const unfollowUser = async (userId) => {
   const res = await axios.post(`${API_URL}/users/${userId}/unfollow`, {}, {
     headers: { Authorization: `Bearer ${token}` }
   });
-  return res.data; // idem, usuario actualizado
+  return res.data; 
 };
 
 const userService = {

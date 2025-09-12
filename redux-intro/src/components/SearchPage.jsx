@@ -45,13 +45,11 @@ const SearchPage = () => {
   const { searchType, searchText } = useParams()
   const { user } = useSelector((state) => state.auth)
 
-  // POSTS
   const postsState = useSelector((state) => state.posts) || {}
   const posts = postsState.posts || []
   const postsLoading = postsState.loading || false
   const likesLoading = postsState.likesLoading || {}
 
-  // USERS
   const usersState = useSelector((state) => state.usersSearch) || {}
   const users = usersState.users || []
   const usersLoading = usersState.loading || false
@@ -59,7 +57,7 @@ const SearchPage = () => {
   useEffect(() => {
     dispatch(fetchPosts())
     if (searchType === 'users') {
-      dispatch(fetchUsers(searchText || '')) // filtra por nombre
+      dispatch(fetchUsers(searchText || '')) 
     }
   }, [dispatch, searchType, searchText])
 

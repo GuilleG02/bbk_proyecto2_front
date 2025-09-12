@@ -48,7 +48,6 @@ const EditProfile = () => {
       updatedData.append('avatar', formData.avatar)
     }
 
-    // Aquí deberías despachar una acción como: dispatch(updateProfile(updatedData))
     console.log('[submit]', Object.fromEntries(updatedData))
     alert('Aquí iría la lógica para actualizar el perfil.')
   }

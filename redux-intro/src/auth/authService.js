@@ -3,10 +3,9 @@ import axios from 'axios'
 const API_URL = 'http://localhost:3001/users'
 
 const register = async (userData) => {
-  // Si es FormData, no tocar Content-Type, Axios lo hace solo
+
   const headers = userData instanceof FormData ? {} : { 'Content-Type': 'application/json' }
 
-  // Depuración: ver qué se envía
   if (userData instanceof FormData) {
     console.log('FormData enviado:', [...userData.entries()])
   } else {

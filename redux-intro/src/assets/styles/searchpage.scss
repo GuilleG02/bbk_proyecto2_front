@@ -15,7 +15,7 @@
     transition: border-color 0.3s, box-shadow 0.3s;
 
     &:focus {
-      outline: none; /* eliminamos el borde predeterminado */
+      outline: none;
       border-color: var(--color-accent);
       box-shadow: 0 0 4px var(--color-accent);
     }

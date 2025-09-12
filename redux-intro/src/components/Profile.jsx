@@ -25,7 +25,6 @@ const Profile = () => {
 
   const joinedDate = new Date(user.createdAt).toLocaleDateString()
 
-  // Helper para obtener URL de la imagen del post
   const getPostImageUrl = (post) => {
     if (!post.image || post.image === 'null' || post.image === '') return DEFAULT_POST_IMAGE
     return `http://localhost:3001/uploads/${post.image}`

@@ -65,14 +65,12 @@ export default function Home() {
             ? post.comments[post.comments.length - 1]
             : null
 
-          // Avatar del autor
           const avatarUrl = post.author?.avatar
             ? post.author.avatar.startsWith('/uploads')
               ? `http://localhost:3001${post.author.avatar}` // ya tiene /uploads
               : `http://localhost:3001/uploads/${post.author.avatar}` // solo nombre
             : DEFAULT_AVATAR
 
-          // Imagen del post
           const postImageUrl = post.image
             ? `http://localhost:3001/uploads/${post.image}`
             : DEFAULT_POST_IMAGE

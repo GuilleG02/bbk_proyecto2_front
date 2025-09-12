@@ -31,7 +31,7 @@
     filter: grayscale(100%) brightness(0.6);
 
     @media (max-width: 480px) {
-      height: 30px;  // más pequeño en móvil
+      height: 30px;  
     }
   }
 
@@ -48,7 +48,7 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    gap: 12px; // un poco más pequeño en móvil
+    gap: 12px; 
   }
 
   @media (max-width: 400px) {
@@ -62,11 +62,11 @@
     font-size: 22px;
 
     @media (max-width: 480px) {
-      font-size: 18px; // reduce tamaño de los iconos
+      font-size: 18px; 
     }
 
     @media (max-width: 400px) {
-      font-size: 16px; // aún más pequeño
+      font-size: 16px; 
     }
 
     cursor: pointer;

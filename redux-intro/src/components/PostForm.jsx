@@ -20,7 +20,6 @@ const PostForm = () => {
   const [image, setImage] = useState(null)
   const [loading, setLoading] = useState(false)
 
-  // Si es edición, cargar datos del post
   useEffect(() => {
     if (id && !post) {
       dispatch(fetchPostById(id))
@@ -42,7 +41,7 @@ const PostForm = () => {
     setLoading(true)
     try {
       const formData = new FormData()
-      formData.append('title', title) // Se envía al backend aunque no se muestre
+      formData.append('title', title) 
       formData.append('description', description)
       if (image instanceof File) {
         formData.append('image', image)
