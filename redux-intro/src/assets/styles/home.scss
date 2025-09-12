@@ -10,6 +10,16 @@ $card-bg: var(--color-card-bg);
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    margin: 90px auto 30px;
+    padding: 0 15px;
+  }
+
+  @media (max-width: 480px) {
+    margin: 80px auto 20px;
+    padding: 0 12px;
+  }
 }
 
 h1 {
@@ -17,6 +27,11 @@ h1 {
   margin-bottom: 30px;
   text-align: center;
   color: $text-dark;
+
+  @media (max-width: 480px) {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
 }
 
 .post-card {
@@ -31,6 +46,10 @@ h1 {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
   }
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 }
 
 .post-author {
@@ -39,6 +58,10 @@ h1 {
   display: flex;
   align-items: center;
   color: $text-dark;
+
+  @media (max-width: 400px) {
+    font-size: 14px;
+  }
 }
 
 .post-image {
@@ -48,16 +71,25 @@ h1 {
   border-radius: 12px;
   margin: 15px 0;
   background: #2a2a2a;
+
+  @media (max-width: 480px) {
+    max-height: 300px;
+    border-radius: 10px;
+  }
 }
 
 .post-description {
   color: $text-medium;
   margin-bottom: 15px;
   line-height: 1.5;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 }
 
 .like-button {
-  background-color: #555; /* menos contraste que el negro neon */
+  background-color: #555;
   color: #fff;
   border: none;
   padding: 10px 18px;
@@ -67,12 +99,17 @@ h1 {
   transition: background-color 0.3s;
 
   &:hover:not(:disabled) {
-    background-color: #444; /* tono más profesional */
+    background-color: #444;
   }
 
   &:disabled {
     background-color: #17bf63;
     cursor: default;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 14px;
+    font-size: 14px;
   }
 }
 
@@ -105,6 +142,7 @@ h1 {
 .toggle-buttons {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 30px;
 }
@@ -128,7 +166,13 @@ h1 {
 
   &.active {
     background-color: $text-dark;
-    color: #fff; /* letras blancas cuando está seleccionado */
+    color: #fff;
+  }
+
+  @media (max-width: 400px) {
+    min-width: 100px;
+    padding: 8px 14px;
+    font-size: 14px;
   }
 }
 
@@ -139,6 +183,11 @@ h1 {
   object-fit: cover;
   margin-right: 10px;
   border: 2px solid rgba(255,255,255,0.2);
+
+  @media (max-width: 400px) {
+    width: 34px;
+    height: 34px;
+  }
 }
 
 .no-followed-posts {
@@ -148,4 +197,9 @@ h1 {
   margin-top: 100px;
   font-size: 18px;
   min-height: 300px;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    margin-top: 60px;
+  }
 }

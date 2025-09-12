@@ -11,6 +11,13 @@
   justify-content: space-between;
   padding: 0 30px;
   z-index: 9999;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding: 10px 15px;
+  }
 }
 
 .logo {
@@ -21,7 +28,15 @@
   img {
     height: 50px;
     width: auto;
-    filter: grayscale(100%) brightness(0.6); /* Gris neutro */
+    filter: grayscale(100%) brightness(0.6);
+
+    @media (max-width: 480px) {
+      height: 30px;  // más pequeño en móvil
+    }
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 10px;
   }
 }
 
@@ -29,21 +44,41 @@
   display: flex;
   gap: 20px;
 
+  @media (max-width: 480px) {
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    gap: 12px; // un poco más pequeño en móvil
+  }
+
+  @media (max-width: 400px) {
+    gap: 10px;
+  }
+
   button {
     background: none;
     border: none;
-    color: var(--color-text-muted); /* siempre gris neutro */
+    color: var(--color-text-muted);
     font-size: 22px;
+
+    @media (max-width: 480px) {
+      font-size: 18px; // reduce tamaño de los iconos
+    }
+
+    @media (max-width: 400px) {
+      font-size: 16px; // aún más pequeño
+    }
+
     cursor: pointer;
     padding: 0;
     transition: color 0.3s;
 
     &:hover {
-      color: var(--color-text-muted); /* mantiene el gris neutro, sin resaltado */
+      color: var(--color-text-muted);
     }
 
     &:focus {
-      outline: none; /* elimina reborde azul */
+      outline: none;
     }
   }
 }

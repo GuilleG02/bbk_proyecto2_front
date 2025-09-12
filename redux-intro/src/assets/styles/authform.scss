@@ -22,6 +22,18 @@ body {
   box-shadow: var(--shadow-light);
   border-radius: var(--border-radius);
   overflow: hidden;
+  transition: width 0.3s, height 0.3s;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 360px;
+    height: auto; /* se adapta al contenido */
+  }
+
+  @media (max-width: 360px) {
+    padding: 16px;
+    border-radius: 12px;
+  }
 }
 
 .form-wrapper {
@@ -36,6 +48,10 @@ body {
 
   &.sign-in { transform: translateX(0); z-index: 2; }
   &.sign-up { transform: translateX(100%); z-index: 1; }
+
+  @media (max-width: 480px) {
+    padding: 20px;
+  }
 }
 
 .wrapper.active {
@@ -48,6 +64,10 @@ h2 {
   color: var(--color-text);
   text-align: center;
   margin-bottom: 20px;
+
+  @media (max-width: 400px) {
+    font-size: 18px;
+  }
 }
 
 .input-group {
@@ -57,8 +77,8 @@ h2 {
 
   input {
     width: 100%;
-    height: 32px;
-    font-size: 14px;
+    height: 36px;
+    font-size: 15px;
     color: var(--color-text);
     padding: 0 4px;
     background: transparent;
@@ -67,7 +87,15 @@ h2 {
 
     &:focus,
     &:valid {
-      & ~ label { top: -6px; font-size: 11px; color: var(--color-accent); }
+      & ~ label { 
+        top: -6px; 
+        font-size: 11px; 
+        color: var(--color-accent); 
+      }
+    }
+
+    @media (max-width: 400px) {
+      font-size: 14px;
     }
   }
 
@@ -95,17 +123,17 @@ h2 {
 
 button {
   width: 100%;
-  height: 34px;
+  height: 40px;
   background: var(--color-accent);
-  box-shadow: 0 0 8px rgba(245,166,35,0.4); /* más sutil */
-  font-size: 14px;
+  box-shadow: 0 0 8px rgba(245,166,35,0.4);
+  font-size: 15px;
   color: var(--color-bg);
   font-weight: 500;
   cursor: pointer;
   border-radius: 24px;
   border: none;
   outline: none;
-  margin-top: 10px;
+  margin-top: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,6 +142,11 @@ button {
   &:hover { 
     background-color: var(--color-accent-hover); 
     box-shadow: 0 0 6px rgba(245,166,35,0.3);
+  }
+
+  @media (max-width: 400px) {
+    height: 44px;
+    font-size: 14px;
   }
 }
 
@@ -132,5 +165,9 @@ button {
       text-decoration: underline; 
       color: var(--color-accent-hover);
     }
+  }
+
+  @media (max-width: 400px) {
+    font-size: 11px;
   }
 }
